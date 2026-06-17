@@ -1,0 +1,12 @@
+# Copy to terraform.tfvars and adjust. terraform.tfvars is gitignored.
+aws_region  = "us-east-1"
+partition   = "aws"
+name_prefix = "ascent-lz"
+
+# Commercial example:
+approved_regions = ["us-east-1"]
+
+# GovCloud example:
+# aws_region       = "us-gov-west-1"
+# partition        = "aws-us-gov"
+# approved_regions = ["us-gov-west-1"]

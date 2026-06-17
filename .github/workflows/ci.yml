@@ -1,0 +1,91 @@
+name: terraform-ci
+
+# DevSecOps checks for the Secure AWS Landing Zone.
+# Mirrors .gitlab-ci.yml so the project demonstrates both CI systems.
+# Runs on every pull request and on pushes to main.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  fmt:
+    name: terraform fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.6.6"
+      - run: terraform fmt -check -recursive -diff
+
+  validate:
+    name: terraform validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.6.6"
+      - name: Validate each module and environment
+        run: |
+          for dir in modules/* environments/*; do
+            if ls "$dir"/*.tf >/dev/null 2>&1; then
+              echo "== validating $dir =="
+              terraform -chdir="$dir" init -backend=false
+              terraform -chdir="$dir" validate
+            fi
+          done
+
+  tflint:
+    name: tflint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: terraform-linters/setup-tflint@v4
+      - run: tflint --init
+      - run: tflint --recursive --config="$GITHUB_WORKSPACE/.tflint.hcl"
+
+  tfsec:
+    name: tfsec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          additional_args: --minimum-severity HIGH
+
+  checkov:
+    name: checkov
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: .
+          framework: terraform
+          quiet: true
+          soft_fail: false
+
+  plan:
+    name: terraform plan
+    runs-on: ubuntu-latest
+    needs: [fmt, validate, tflint]
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.6.6"
+      - name: Plan example environments (no backend/credentials)
+        run: |
+          for dir in environments/management environments/nonprod; do
+            echo "== terraform plan: $dir =="
+            terraform -chdir="$dir" init -backend=false
+            terraform -chdir="$dir" plan -input=false -lock=false || true
+          done
