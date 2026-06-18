@@ -6,6 +6,17 @@
 # NOTE: SCPs require AWS Organizations with "all features" enabled and must be
 #       applied from the management account.
 
+terraform {
+  required_version = ">= 1.6.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+  }
+}
+
 # Deny use of the root user for everything except a tiny allow-list.
 resource "aws_organizations_policy" "deny_root" {
   name        = "${var.name_prefix}-deny-root"

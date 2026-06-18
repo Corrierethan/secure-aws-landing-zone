@@ -6,6 +6,17 @@
 # Controls: SC-12 (key management), SC-28 (protection of information at rest),
 #           AU-9 (protection of audit information — state can contain sensitive data).
 
+terraform {
+  required_version = ">= 1.6.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+  }
+}
+
 data "aws_partition" "current" {}
 
 resource "aws_kms_key" "state" {

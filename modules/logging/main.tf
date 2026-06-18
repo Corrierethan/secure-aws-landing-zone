@@ -4,6 +4,17 @@
 # Controls: AU-2 (event logging), AU-9 (protection of audit info),
 #           AU-11 (audit record retention).
 
+terraform {
+  required_version = ">= 1.6.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+  }
+}
+
 # Versioned, encrypted, access-blocked S3 archive for logs.
 resource "aws_s3_bucket" "archive" {
   # checkov:skip=CKV_AWS_18:This IS the log-archive bucket; pointing access logging at itself would recurse. Access logs land here.

@@ -19,9 +19,3 @@ variable "target_ou_ids" {
   description = "Organizational Unit IDs to attach the guardrail SCPs to."
   type        = list(string)
 }
-
-variable "tags" {
-  description = "Tags applied to resources that support tagging."
-  type        = map(string)
-  default     = {}
-}

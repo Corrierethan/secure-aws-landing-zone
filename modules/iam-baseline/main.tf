@@ -3,6 +3,17 @@
 #
 # Controls: AC-2 (account management), AC-6 (least privilege), IA-2 (MFA).
 
+terraform {
+  required_version = ">= 1.6.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+  }
+}
+
 # Account-wide password policy.
 resource "aws_iam_account_password_policy" "this" {
   minimum_password_length        = 14
