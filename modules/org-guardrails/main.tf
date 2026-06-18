@@ -31,8 +31,8 @@ resource "aws_organizations_policy" "region_lock" {
   content = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Sid      = "DenyOutsideApprovedRegions"
-      Effect   = "Deny"
+      Sid    = "DenyOutsideApprovedRegions"
+      Effect = "Deny"
       NotAction = [
         "iam:*", "organizations:*", "sts:*", "cloudfront:*",
         "route53:*", "support:*", "waf:*",
