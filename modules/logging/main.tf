@@ -6,6 +6,9 @@
 
 # Versioned, encrypted, access-blocked S3 archive for logs.
 resource "aws_s3_bucket" "archive" {
+  # checkov:skip=CKV_AWS_18:This IS the log-archive bucket; pointing access logging at itself would recurse. Access logs land here.
+  # checkov:skip=CKV_AWS_144:Single-region by design for this reference LZ; cross-region replication is out of scope (tracked separately).
+  # checkov:skip=CKV2_AWS_62:Event notifications add no value for a write-once log archive and are intentionally omitted.
   bucket = "${var.name_prefix}-log-archive-${var.account_id}"
   tags   = merge(var.tags, { Name = "${var.name_prefix}-log-archive" })
 }
@@ -42,6 +45,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "archive" {
     id     = "retain-logs"
     status = "Enabled"
     filter {}
+    # Clean up failed multipart uploads so partial objects don't linger (CKV_AWS_300).
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
     transition {
       days          = 90
       storage_class = "GLACIER"
