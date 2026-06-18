@@ -4,26 +4,27 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "partition" {
-  description = "AWS ARN partition: \"aws\" or \"aws-us-gov\"."
-  type        = string
-  default     = "aws"
-}
-
 variable "name_prefix" {
   description = "Prefix applied to all resource names."
   type        = string
   default     = "ascent-lz"
 }
 
-variable "approved_regions" {
-  description = "Regions permitted by the region-lock SCP."
-  type        = list(string)
-  default     = ["us-east-1"]
-}
-
-variable "target_ou_ids" {
-  description = "OU IDs to attach guardrail SCPs to (populate once the org exists)."
-  type        = list(string)
-  default     = []
-}
+# TODO(1.7): uncomment these when the guardrails module is enabled in main.tf
+# variable "partition" {
+#   description = "AWS ARN partition: \"aws\" or \"aws-us-gov\"."
+#   type        = string
+#   default     = "aws"
+# }
+#
+# variable "approved_regions" {
+#   description = "Regions permitted by the region-lock SCP."
+#   type        = list(string)
+#   default     = ["us-east-1"]
+# }
+#
+# variable "target_ou_ids" {
+#   description = "OU IDs to attach guardrail SCPs to (populate once the org exists)."
+#   type        = list(string)
+#   default     = []
+# }

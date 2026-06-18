@@ -5,9 +5,26 @@
 # Controls: SC-7 (boundary protection), AU-12 (audit generation via flow logs),
 #           AC-4 (information flow enforcement).
 
+terraform {
+  required_version = ">= 1.6.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+  }
+}
+
 data "aws_availability_zones" "available" {
   state = "available"
 }
+
+data "aws_caller_identity" "current" {}
+
+data "aws_partition" "current" {}
+
+data "aws_region" "current" {}
 
 locals {
   az_count = min(var.az_count, length(data.aws_availability_zones.available.names))
@@ -118,9 +135,46 @@ resource "aws_route_table_association" "private" {
 # ---------------------------------------------------------------------------
 # VPC Flow Logs -> CloudWatch (audit generation)
 # ---------------------------------------------------------------------------
+# KMS key so the flow-log group is encrypted at rest (CKV_AWS_158).
+resource "aws_kms_key" "flow" {
+  description             = "KMS key for ${var.name_prefix} VPC flow log group"
+  deletion_window_in_days = 30
+  enable_key_rotation     = true
+
+  # Allow the CloudWatch Logs service in this region/account to use the key.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "EnableAccountAdmin"
+        Effect    = "Allow"
+        Principal = { AWS = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root" }
+        Action    = "kms:*"
+        Resource  = "*"
+      },
+      {
+        Sid       = "AllowCloudWatchLogs"
+        Effect    = "Allow"
+        Principal = { Service = "logs.${data.aws_region.current.name}.amazonaws.com" }
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey",
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+
+  tags = merge(var.tags, { Name = "${var.name_prefix}-flow-logs" })
+}
+
 resource "aws_cloudwatch_log_group" "flow" {
   name              = "/vpc/${var.name_prefix}/flow-logs"
   retention_in_days = var.flow_log_retention_days
+  kms_key_id        = aws_kms_key.flow.arn
   tags              = var.tags
 }
 
