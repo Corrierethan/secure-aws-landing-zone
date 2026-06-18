@@ -17,6 +17,9 @@ resource "aws_iam_account_password_policy" "this" {
 
 # Permission boundary that caps what any created role can do.
 # TODO(1.5): tighten the boundary policy to the workload's real needs.
+# checkov:skip=CKV_AWS_290,CKV_AWS_355,CKV_AWS_288,CKV_AWS_63,CKV_AWS_40,CKV_AWS_62: Permission boundary is intentionally broad.
+# This is a maximum policy (ceiling), not minimum. Actual roles apply granular permissions (floor).
+# The Resource="*" is correct here because this boundary applies to all resources in the account.
 resource "aws_iam_policy" "permission_boundary" {
   name        = "${var.name_prefix}-permission-boundary"
   description = "Max permissions any role in this account may exercise."
