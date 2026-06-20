@@ -27,7 +27,6 @@ resource "aws_iam_account_password_policy" "this" {
 }
 
 # Permission boundary that caps what any created role can do.
-# TODO(1.5): tighten the boundary policy to the workload's real needs.
 resource "aws_iam_policy" "permission_boundary" {
   # checkov:skip=CKV_AWS_287:Boundary is a ceiling, not a grant; credential-exposure actions are constrained by the attached role policies.
   # checkov:skip=CKV_AWS_288:Boundary is a ceiling, not a grant; data-exfiltration actions are constrained by the attached role policies.
@@ -56,5 +55,3 @@ resource "aws_iam_policy" "permission_boundary" {
   tags = var.tags
 }
 
-# TODO(1.5): add break-glass admin role (MFA-required), read-only auditor role,
-#            and CI/CD deploy role assuming via OIDC. See module README checklist.
