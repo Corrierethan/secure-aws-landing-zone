@@ -15,6 +15,36 @@ terraform {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
+data "aws_partition" "current" {}
+
+resource "aws_kms_key" "log_archive" {
+  description             = "KMS key for log archive bucket encryption"
+  deletion_window_in_days = 30
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "EnableAccountAdmin"
+        Effect    = "Allow"
+        Principal = { AWS = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root" }
+        Action    = "kms:*"
+        Resource  = "*"
+      }
+    ]
+  })
+
+  tags = merge(var.tags, { Name = "${var.name_prefix}-log-archive" })
+}
+
+resource "aws_kms_alias" "log_archive" {
+  name          = "alias/${var.name_prefix}-log-archive"
+  target_key_id = aws_kms_key.log_archive.key_id
+}
+
 # Versioned, encrypted, access-blocked S3 archive for logs.
 resource "aws_s3_bucket" "archive" {
   # checkov:skip=CKV_AWS_18:This IS the log-archive bucket; pointing access logging at itself would recurse. Access logs land here.
@@ -35,7 +65,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "archive" {
   bucket = aws_s3_bucket.archive.id
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "aws:kms"
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = aws_kms_key.log_archive.arn
     }
     bucket_key_enabled = true
   }
