@@ -12,6 +12,23 @@ often subcontract.
 
 ---
 
+## Who is this for
+
+A prime contractor wins a federal program and needs a compliant AWS environment stood up before
+the first workload team arrives. They subcontract the cloud foundation to a DevSecOps shop —
+that shop delivers this landing zone.
+
+**Reach for this when:**
+
+- A new AWS Organization (or GovCloud org) needs a security baseline before any workload is deployed
+- A program must demonstrate NIST 800-53 controls (SC-12, SC-28, AU-2, AU-9, AC-6, CM-7) at the infrastructure layer
+- The team wants shift-left enforcement: every PR is gated by `tfsec`, `checkov`, `tflint`, and `terraform plan` before a human reviews
+- The environment needs to be reproducible — spun up in a sandbox, torn down, then promoted to prod without manual steps
+
+**Not a fit for:** teams that already have AWS Control Tower deployed and managed by a central cloud team — this is a Terraform-native alternative, not a wrapper around Control Tower.
+
+---
+
 ## What this provides
 
 ```mermaid

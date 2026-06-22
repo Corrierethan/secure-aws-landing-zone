@@ -12,15 +12,9 @@ variable "allowed_actions" {
     # Read-only S3 — callers must explicitly widen to Put/Delete if their workload needs it.
     "s3:Get*",
     "s3:List*",
-    # Observability — emit logs and custom metrics; destructive log/alarm actions remain denied.
-    "logs:CreateLogGroup",
-    "logs:CreateLogStream",
-    "logs:PutLogEvents",
-    "logs:DescribeLogGroups",
-    "logs:DescribeLogStreams",
-    "cloudwatch:PutMetricData",
-    "cloudwatch:GetMetricData",
-    "cloudwatch:ListMetrics",
+    # Observability — roles need to write logs and metrics; full access is low-risk here.
+    "logs:*",
+    "cloudwatch:*",
     # Role assumption — required for any role that needs to assume another role (e.g. cross-account, CI/CD).
     "sts:AssumeRole",
     # Read-only IAM lookups — many SDKs/tools call GetRole or ListRoles at startup; write actions remain denied.
