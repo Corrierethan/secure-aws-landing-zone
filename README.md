@@ -22,10 +22,13 @@ that shop delivers this landing zone.
 
 - A new AWS Organization (or GovCloud org) needs a security baseline before any workload is deployed
 - A program must demonstrate NIST 800-53 controls (SC-12, SC-28, AU-2, AU-9, AC-6, CM-7) at the infrastructure layer
-- The team wants shift-left enforcement: every PR is gated by `tfsec`, `checkov`, `tflint`, and `terraform plan` before a human reviews
+- The team wants shift-left enforcement: CI runs `terraform fmt`, `terraform validate`, `tflint`, `tfsec`,
+  and `checkov` on every PR (HIGH/CRITICAL findings fail the build), plus a non-blocking `terraform plan`
+  of the example environments for reviewer visibility
 - The environment needs to be reproducible — spun up in a sandbox, torn down, then promoted to prod without manual steps
 
-**Not a fit for:** teams that already have AWS Control Tower deployed and managed by a central cloud team — this is a Terraform-native alternative, not a wrapper around Control Tower.
+**Not a fit for:** teams that already have AWS Control Tower deployed and managed by a central
+cloud team — this is a Terraform-native alternative, not a wrapper around Control Tower.
 
 ---
 
