@@ -35,7 +35,10 @@ resource "aws_iam_policy" "permission_boundary" {
   # checkov:skip=CKV_AWS_355:A permission boundary must use Resource="*" to cap every resource the role could ever touch.
   name        = "${var.name_prefix}-permission-boundary"
   description = "Max permissions any role in this account may exercise."
-  policy = jsonencode({
+  # Read-only action wildcards (Describe*/Get*/List*) are intentional on a permission boundary —
+  # it is a ceiling, not a grant. Roles still apply granular least-privilege policies underneath;
+  # mutating/credential actions are not included here.
+  policy = jsonencode({ # tfsec:ignore:aws-iam-no-policy-wildcards
     Version = "2012-10-17"
     Statement = [
       {
