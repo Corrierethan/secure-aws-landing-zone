@@ -69,7 +69,7 @@ resource "aws_iam_policy" "permission_boundary" {
 # ---------------------------------------------------------------------------
 resource "aws_iam_role" "break_glass" {
   name                 = "${var.name_prefix}-break-glass"
-  description          = "Emergency admin role — MFA required, assume-role is logged and alerted."
+  description          = "Emergency admin role - MFA required, assume-role is logged and alerted."
   max_session_duration = 3600 # 1 hour max; limits blast radius of a compromised session.
   permissions_boundary = aws_iam_policy.permission_boundary.arn
 
@@ -149,7 +149,7 @@ resource "aws_iam_role" "cicd_deploy" {
   count = var.enable_github_oidc ? 1 : 0
 
   name                 = "${var.name_prefix}-cicd-deploy"
-  description          = "Assumed by GitHub Actions via OIDC — no long-lived access keys."
+  description          = "Assumed by GitHub Actions via OIDC - no long-lived access keys."
   permissions_boundary = aws_iam_policy.permission_boundary.arn
 
   assume_role_policy = jsonencode({
