@@ -194,7 +194,10 @@ resource "aws_iam_role" "flow" {
 resource "aws_iam_role_policy" "flow" {
   name = "${var.name_prefix}-vpc-flow-logs"
   role = aws_iam_role.flow.id
-  policy = jsonencode({
+  # The `:*` on Resource scopes to log streams WITHIN this single flow-log group (Resource is
+  # bound to aws_cloudwatch_log_group.flow.arn) — the minimal permission VPC Flow Logs need to
+  # create and write streams, not a true account-wide wildcard.
+  policy = jsonencode({ # tfsec:ignore:aws-iam-no-policy-wildcards
     Version = "2012-10-17"
     Statement = [{
       Effect = "Allow"

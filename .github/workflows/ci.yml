@@ -58,6 +58,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: aquasecurity/tfsec-action@v1.0.3
         with:
+          # Pin tfsec (final EOL release) so an unpinned `latest` can't change
+          # scan behavior and break unrelated PRs. Bump deliberately.
+          version: v1.28.14
           additional_args: --minimum-severity HIGH
 
   checkov:
