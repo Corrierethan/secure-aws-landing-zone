@@ -1,15 +1,18 @@
 # Module: `logging`
 
-Centralized audit logging archive. **Issue 1.6 (Andy).** Starter scaffold — extend with the
-org CloudTrail and AWS Config recorder per the checklist.
+Centralized audit logging archive. Versioned, KMS-encrypted S3 bucket designed as the
+landing target for an organization CloudTrail and AWS Config recorder.
 
-## Build checklist (issue 1.6)
+## What's included
 
-- [x] Versioned, KMS-encrypted, public-access-blocked log archive bucket
-- [x] Lifecycle: transition to Glacier + long retention (~7 yr)
-- [ ] Organization CloudTrail (multi-region, log file validation enabled)
-- [ ] AWS Config recorder + delivery channel writing to the archive
-- [ ] S3 Object Lock (WORM) for tamper-evident retention
+- Versioned, KMS-encrypted, public-access-blocked log archive bucket
+- Lifecycle: transition to Glacier + long retention (~7 yr)
+
+## Extend with
+
+- Organization CloudTrail (multi-region, log file validation enabled)
+- AWS Config recorder + delivery channel writing to the archive
+- S3 Object Lock (WORM) for tamper-evident retention
 
 ## Inputs
 

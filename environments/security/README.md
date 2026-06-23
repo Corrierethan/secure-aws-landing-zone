@@ -1,6 +1,6 @@
 # `security` environment
 
-Security/audit account composition. **Issue 1.8 (Andy).**
+Security/audit account composition.
 
 ## What goes here
 
@@ -22,7 +22,7 @@ protect log evidence from every other account in the organization.
 | `Environment` tag | `security` |
 | `name_prefix` | `ascent-lz-security` |
 
-## Files to create
+## Files
 
 | File | Purpose |
 |---|---|

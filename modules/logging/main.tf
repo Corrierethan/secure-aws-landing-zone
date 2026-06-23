@@ -1,5 +1,6 @@
 # logging — centralized audit logging
-# Issue 1.6 (Owner: Andy). Starter scaffold; flesh out org-trail + Config per brief.
+# Versioned, KMS-encrypted S3 log archive with lifecycle policy. Designed as the
+# landing target for an organization CloudTrail and AWS Config.
 #
 # Controls: AU-2 (event logging), AU-9 (protection of audit info),
 #           AU-11 (audit record retention).
@@ -101,5 +102,5 @@ resource "aws_s3_bucket_lifecycle_configuration" "archive" {
   }
 }
 
-# TODO(1.6): organization-wide CloudTrail (multi-region, log file validation on)
-#            writing to this bucket, and an AWS Config recorder + delivery channel.
+# Organization-wide CloudTrail (multi-region, log file validation enabled) and
+# an AWS Config recorder + delivery channel can be wired to this bucket.

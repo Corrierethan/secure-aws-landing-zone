@@ -1,15 +1,15 @@
 # Module: `iam-baseline`
 
-Least-privilege identity baseline for an account. **Issue 1.5 (Ethan).**
+Least-privilege identity baseline for an account.
 
-## Build checklist (issue 1.5)
+## What's included
 
-- [x] Strong account password policy
-- [x] Reusable permission boundary policy
-- [x] Break-glass admin role (MFA required, session capped at 1 hour)
-- [x] Read-only auditor role (for assessors)
-- [x] CI/CD deploy role via GitHub Actions OIDC (no long-lived keys)
-- [x] Deny creation of IAM users / access keys (prefer roles + SSO)
+- Strong account password policy
+- Reusable permission boundary policy
+- Break-glass admin role (MFA required, session capped at 1 hour)
+- Read-only auditor role (for assessors)
+- CI/CD deploy role via GitHub Actions OIDC (no long-lived keys)
+- Deny creation of IAM users / access keys (prefer roles + SSO)
 
 ## Usage
 

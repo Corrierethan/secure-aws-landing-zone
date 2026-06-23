@@ -56,10 +56,10 @@ implementation evidence. This is *implementation evidence*, not a full System Se
 
 ## Gaps / future work
 
-- [ ] Organization CloudTrail with log file validation (issue 1.6).
-- [ ] AWS Config conformance pack for the Moderate baseline (issue 1.6).
-- [ ] S3 Object Lock (WORM) on the log archive for AU-9 tamper resistance.
-- [ ] GovCloud validation pass using `aws-us-gov` partition and approved GovCloud regions.
+- Organization CloudTrail with log file validation.
+- AWS Config conformance pack for the Moderate baseline.
+- S3 Object Lock (WORM) on the log archive for AU-9 tamper resistance.
+- GovCloud validation pass using `aws-us-gov` partition and approved GovCloud regions.
 
 ## How CI supports compliance
 

@@ -10,7 +10,8 @@ variable "name_prefix" {
   default     = "ascent-lz"
 }
 
-# TODO(1.7): uncomment these when the guardrails module is enabled in main.tf
+# Uncomment the block below and the module "guardrails" call in main.tf
+# once the AWS Organization and OUs have been created.
 # variable "partition" {
 #   description = "AWS ARN partition: \"aws\" or \"aws-us-gov\"."
 #   type        = string

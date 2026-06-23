@@ -1,5 +1,6 @@
 # iam-baseline — least-privilege identity baseline
-# Issue 1.5 (Owner: Ethan). Starter scaffold below; flesh out per the brief.
+# Password policy, permission boundaries, and IAM guardrails that apply to every
+# account enrolled in the landing zone.
 #
 # Controls: AC-2 (account management), AC-6 (least privilege), IA-2 (MFA).
 
