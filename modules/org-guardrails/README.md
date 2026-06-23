@@ -1,7 +1,7 @@
 # Module: `org-guardrails`
 
-Preventive **Service Control Policies (SCPs)** attached to Organizational Units. **Issue 1.7
-(Ethan).** Applied from the management account; requires AWS Organizations with all features.
+Preventive **Service Control Policies (SCPs)** attached to Organizational Units.
+Applied from the management account; requires AWS Organizations with all features.
 
 ## Guardrails included
 

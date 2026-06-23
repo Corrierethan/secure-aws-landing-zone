@@ -1,6 +1,6 @@
 # `prod` environment
 
-Production workload account composition. **Issue 1.8 (Andy).**
+Production workload account composition.
 
 ## What goes here
 
@@ -16,7 +16,7 @@ up the same three modules — `networking`, `iam-baseline`, and `logging` — wi
 | `Environment` tag | `nonprod` | `prod` |
 | Backend state key | `nonprod/terraform.tfstate` | `prod/terraform.tfstate` |
 
-## Files to create
+## Files
 
 | File | Purpose |
 |---|---|

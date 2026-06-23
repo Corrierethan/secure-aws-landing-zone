@@ -1,5 +1,5 @@
 # org-guardrails — Service Control Policies (SCPs)
-# Issue 1.7 (Owner: Ethan). Preventive guardrails attached to OUs.
+# Preventive guardrails attached to Organizational Units from the management account.
 #
 # Controls: AC-3 (access enforcement), CM-7 (least functionality).
 #

@@ -297,9 +297,7 @@ Control crosswalk to NIST 800-53: [docs/compliance-notes.md](docs/compliance-not
 
 ## Status
 
-Foundation project of the [Ascent DevOps portfolio](https://github.com/Corrierethan). See the
-[ticket backlog](https://github.com/Corrierethan/ascent-portfolio-plan/blob/main/tickets/backlog.md)
-(Epic 1) for the work breakdown.
+Active development. See the [GitHub issues](https://github.com/Corrierethan/secure-aws-landing-zone/issues) for the current work breakdown.
 
 ## License
 
