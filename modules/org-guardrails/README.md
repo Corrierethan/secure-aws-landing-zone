@@ -31,7 +31,6 @@ module "guardrails" {
 | `partition` | `aws` or `aws-us-gov` | `string` | `"aws"` |
 | `approved_regions` | Permitted regions | `list(string)` | `["us-east-1","us-west-2"]` |
 | `target_ou_ids` | OUs to attach SCPs to | `list(string)` | n/a |
-| `tags` | Tags | `map(string)` | `{}` |
 
 ## Outputs
 

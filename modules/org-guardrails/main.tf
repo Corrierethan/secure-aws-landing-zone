@@ -66,9 +66,6 @@ resource "aws_organizations_policy" "no_public_s3" {
       Effect   = "Deny"
       Action   = ["s3:PutAccountPublicAccessBlock", "s3:PutBucketPublicAccessBlock"]
       Resource = "*"
-      Condition = {
-        Bool = { "s3:PublicAccessBlockConfiguration:RestrictPublicBuckets" = "false" }
-      }
     }]
   })
 }
