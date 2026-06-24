@@ -34,6 +34,21 @@ resource "aws_kms_key" "log_archive" {
         Principal = { AWS = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root" }
         Action    = "kms:*"
         Resource  = "*"
+      },
+      {
+        Sid    = "AllowCloudTrailConfigEncrypt"
+        Effect = "Allow"
+        Principal = {
+          Service = [
+            "cloudtrail.amazonaws.com",
+            "config.amazonaws.com"
+          ]
+        }
+        Action = [
+          "kms:GenerateDataKey*",
+          "kms:Decrypt"
+        ]
+        Resource = "*"
       }
     ]
   })
@@ -100,6 +115,49 @@ resource "aws_s3_bucket_lifecycle_configuration" "archive" {
       days = var.log_retention_days
     }
   }
+}
+
+resource "aws_s3_bucket_policy" "archive" {
+  bucket = aws_s3_bucket.archive.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AllowCloudTrailAclCheck"
+        Effect    = "Allow"
+        Principal = { Service = "cloudtrail.amazonaws.com" }
+        Action    = "s3:GetBucketAcl"
+        Resource  = aws_s3_bucket.archive.arn
+      },
+      {
+        Sid       = "AllowCloudTrailWrite"
+        Effect    = "Allow"
+        Principal = { Service = "cloudtrail.amazonaws.com" }
+        Action    = "s3:PutObject"
+        Resource  = "${aws_s3_bucket.archive.arn}/*"
+        Condition = {
+          StringEquals = { "s3:x-amz-server-side-encryption" = "aws:kms" }
+        }
+      },
+      {
+        Sid       = "AllowConfigAclCheck"
+        Effect    = "Allow"
+        Principal = { Service = "config.amazonaws.com" }
+        Action    = "s3:GetBucketAcl"
+        Resource  = aws_s3_bucket.archive.arn
+      },
+      {
+        Sid       = "AllowConfigWrite"
+        Effect    = "Allow"
+        Principal = { Service = "config.amazonaws.com" }
+        Action    = "s3:PutObject"
+        Resource  = "${aws_s3_bucket.archive.arn}/*"
+        Condition = {
+          StringEquals = { "s3:x-amz-server-side-encryption" = "aws:kms" }
+        }
+      }
+    ]
+  })
 }
 
 # Organization-wide CloudTrail (multi-region, log file validation enabled) and
